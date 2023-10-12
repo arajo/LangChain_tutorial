@@ -2,6 +2,7 @@
 # coding: utf-8
 
 # 참고: https://medium.com/mlearning-ai/build-a-chat-with-csv-app-using-langchain-and-streamlit-94a8b3363aa9
+# Chat With Your Document Using Langchain and Streamlit
 
 # Environment Setup
 
@@ -100,11 +101,16 @@ def main():
         # do something with the data
 
         question = st.text_input("Once uploaded, you can chat with your document. Enter your question here:")
+        language = st.text_input("Enter your language")
         submit_button = st.button('Submit')
 
         if submit_button:
             if doc == "text":
-                response = index.query(question)
+                translation_job = f"""
+                문서를 참조하여 다음 문장에 대해 {language}로 자연스럽게 번역해줘.
+                {question}
+                """
+                response = index.query(translation_job)
             else:
                 response = agent.run(question)
 
