@@ -19,15 +19,16 @@ from langchain.document_loaders import TextLoader
 from langchain.indexes import VectorstoreIndexCreator
 
 
-def get_secrets():
+def get_secrets(type):
     SECRET = {}
     secrets = json.loads(open("./secrets.json").read())
     for k, v in secrets.items():
         SECRET[k] = v
-    return SECRET
+    if type == 'openai_key':
+        return SECRET['OPENAI_KEY']
 
 
-os.environ['OPENAI_API_KEY'] = get_secrets()['OPENAPI_KEY']
+os.environ['OPENAI_API_KEY'] = get_secrets('openai_key')
 llm = OpenAI(temperature=0.1)
 default_data_dir = "./data/"
 
